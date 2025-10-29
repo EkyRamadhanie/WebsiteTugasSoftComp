@@ -3,56 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hasil Tugas Python - Eky Ramadhanie</title>
+    <title>Tugas Soft Computing - Muhammad Rizki Ramadhani</title>
+
+    <!-- Style dan Script -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
 </head>
+
 <body>
+    <!-- HEADER -->
     <header>
-        <nav class="navbar">
-            <div class="logo">🐍 TugasPython</div>
-            <ul class="nav-links">
-                <li><a href="#home">Beranda</a></li>
-                <li><a href="#tugas">Hasil Tugas</a></li>
-                <li><a href="#tentang">Tentang</a></li>
-                <li><a href="#kontak">Kontak</a></li>
-            </ul>
-        </nav>
+        <h1 class="judul">Tugas Soft Computing<br>Muhammad Rizki Ramadhani</h1>
     </header>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Selamat Datang di Galeri Tugas Python-ku 🧠</h1>
-            <p>Website ini menampilkan hasil pemrograman Python-ku secara interaktif dan elegan.</p>
-            <a href="#tugas" class="btn">Lihat Hasil</a>
-        </div>
-    </section>
-
-    <section id="tugas" class="tugas">
-        <h2>📘 Daftar Hasil Tugas</h2>
-        <div class="tugas-container">
-            {% for file in files %}
-                <div class="card">
-                    <h3>{{ file }}</h3>
-                    <a href="{{ url_for('run_python', filename=file) }}">🟢 Jalankan Script</a>
-                </div>
+    <!-- DAFTAR TUGAS -->
+    <section class="daftar">
+        <h2>Daftar Hasil Tugas</h2>
+        <ul>
+            {% for file, nama in tugas_list %}
+            <li>
+            <span>{{ nama }}</span>
+            <a href="{{ url_for('run_python', filename=file) }}" class="btn">Lihat Hasil</a>
+            </li>
             {% endfor %}
-        </div>
+
+        </ul>
     </section>
 
-    <section id="tentang" class="tentang">
-        <h2>👨‍💻 Tentang Website Ini</h2>
-        <p>Website ini dibuat dengan <b>Python Flask</b> dan menampilkan hasil tugas yang dibuat oleh
-        <b>Eky Ramadhanie</b>. Semua file tugas dieksekusi langsung menggunakan backend Python!</p>
-    </section>
-
-    <section id="kontak" class="kontak">
-        <h2>📫 Hubungi Saya</h2>
-        <p>Email: <a href="mailto:muhrizkyrmdhn2610@gmail.com">muhrizkyrmdhn2610@gmail.com</a></p>
-    </section>
-
+    <!-- FOOTER -->
     <footer>
-        <p>&copy; 2025 Eky Ramadhanie</p>
+        <p>© 2025 Muhammad Rizki Ramadhani | Website Tugas Soft Computing</p>
     </footer>
 </body>
 </html>

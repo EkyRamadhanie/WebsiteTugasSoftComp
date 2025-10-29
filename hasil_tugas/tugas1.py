@@ -68,7 +68,6 @@ Kekurangan:
 """)
 
     print("===============================================\n")
-    print("Tugas 1 selesai ditampilkan.")
 
 
 if __name__ == "__main__":

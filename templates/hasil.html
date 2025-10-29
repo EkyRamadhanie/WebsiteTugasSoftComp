@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hasil Tugas - {{ filename }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+
+<body>
+    <header>
+        <h1 class="judul">Hasil Tugas Soft Computing</h1>
+        <p style="color:#aaa; font-size:1rem;">File: {{ filename }}</p>
+    </header>
+
+    <section class="hasil">
+        <pre>{{ result }}</pre>
+        <a href="{{ url_for('index') }}" class="btn-back">⬅️ Kembali ke Beranda</a>
+    </section>
+
+    <footer>
+        <p>© 2025 Muhammad Rizki Ramadhani | Website Tugas Soft Computing</p>
+    </footer>
+</body>
+</html>

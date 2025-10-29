@@ -1,42 +1,30 @@
 from flask import Flask, render_template, url_for
-import os
-import subprocess
+import os, subprocess
 
 app = Flask(__name__)
 
-# Folder tempat file Python disimpan
-HASIL_TUGAS_DIR = os.path.join(app.root_path, "hasil_tugas")
-
-@app.route("/")
+@app.route('/')
 def index():
-    files = [f for f in os.listdir(HASIL_TUGAS_DIR) if f.endswith(".py")]
-    return render_template("index.html", files=files)
+    folder = os.path.join(app.root_path, 'hasil_tugas')
+    tugas_list = []
+    for f in os.listdir(folder):
+        if f.endswith('.py'):
+            # ambil nama tanpa .py dan ubah jadi format "TUGAS X"
+            nama_tugas = f.replace('.py', '').replace('tugas', 'TUGAS ').upper()
+            tugas_list.append((f, nama_tugas))
+    return render_template('index.html', tugas_list=tugas_list)
 
-@app.route("/run/<filename>")
+
+@app.route('/run/<filename>')
 def run_python(filename):
-    file_path = os.path.join(HASIL_TUGAS_DIR, filename)
-    if os.path.exists(file_path):
-        # Jalankan file python dan ambil outputnya
-        result = subprocess.run(["python3", file_path], capture_output=True, text=True)
-        output = result.stdout + result.stderr
-        return f"""
-        <html>
-            <head>
-                <link rel='stylesheet' href='{url_for('static', filename='style.css')}'>
-                <title>Output - {filename}</title>
-            </head>
-            <body>
-                <div class='terminal'>
-                    <h2>🐍 Output dari {filename}</h2>
-                    <pre>{output}</pre>
-                    <a href='/' class='btn'>⬅️ Kembali</a>
-                </div>
-            </body>
-        </html>
-        """
-    else:
-        return f"❌ File {filename} tidak ditemukan."
+    file_path = os.path.join(app.root_path, 'hasil_tugas', filename)
+    try:
+        result = subprocess.check_output(['python', file_path], stderr=subprocess.STDOUT, text=True)
+    except subprocess.CalledProcessError as e:
+        result = e.output
+
+    return render_template('hasil.html', filename=filename, result=result)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
