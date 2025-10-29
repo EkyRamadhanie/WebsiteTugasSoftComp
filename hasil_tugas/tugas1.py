@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ===============================================
 # Tugas 1 - Algoritma Kecerdasan Buatan
 # Penulis: Eky Ramadhanie
@@ -9,7 +10,7 @@ def main():
     # -------------------------------
     # 1. Algoritma Fuzzy Logic
     # -------------------------------
-    print("🔹 1. Algoritma Fuzzy Logic")
+    print("1. Algoritma Fuzzy Logic")
     print("""
 Pengertian:
 Fuzzy Logic (Logika Fuzzy) adalah metode komputasi yang meniru cara manusia mengambil keputusan
@@ -29,7 +30,7 @@ Kekurangan:
     # -------------------------------
     # 2. Algoritma Jaringan Saraf Tiruan (JST)
     # -------------------------------
-    print("🔹 2. Algoritma Jaringan Saraf Tiruan (Neural Network)")
+    print("2. Algoritma Jaringan Saraf Tiruan (Neural Network)")
     print("""
 Pengertian:
 Jaringan Saraf Tiruan (JST) adalah model komputasi yang terinspirasi dari cara kerja otak manusia,
@@ -49,7 +50,7 @@ Kekurangan:
     # -------------------------------
     # 3. Algoritma Genetika
     # -------------------------------
-    print("🔹 3. Algoritma Genetika (Genetic Algorithm)")
+    print("3. Algoritma Genetika (Genetic Algorithm)")
     print("""
 Pengertian:
 Algoritma Genetika adalah algoritma optimasi berbasis prinsip evolusi biologis — seleksi alam, crossover,
@@ -67,7 +68,7 @@ Kekurangan:
 """)
 
     print("===============================================\n")
-    print("Tugas 1 selesai ditampilkan ✅")
+    print("Tugas 1 selesai ditampilkan.")
 
 
 if __name__ == "__main__":
