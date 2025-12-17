@@ -29,11 +29,13 @@ def index():
 
 @app.route('/run/<filename>')
 def run_python(filename):
-    # Jika tugas2.py atau tugas3.py, redirect ke form input
+    # Jika tugas2.py, tugas3.py, atau tugas4.py, redirect ke form input
     if filename == 'tugas2.py':
         return render_template('form_tugas2.html')
     elif filename == 'tugas3.py':
         return render_template('form_tugas3.html')
+    elif filename == 'tugas4.py':
+        return render_template('form_tugas4.html')
     
     file_path = os.path.join(app.root_path, 'hasil_tugas', filename)
     try:
@@ -232,6 +234,121 @@ def run_tugas3():
         import traceback
         error_msg = f"Error: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
         return render_template('hasil.html', filename='tugas3.py', result=error_msg)
+
+
+@app.route('/run_tugas4', methods=['POST'])
+def run_tugas4():
+    try:
+        # Ambil parameter dari form
+        x = float(request.form.get('x', 3))
+        y = float(request.form.get('y', 4))
+        
+        # Parameter A1
+        a1_a = float(request.form.get('a1_a', 2))
+        a1_b = float(request.form.get('a1_b', 2))
+        a1_c = float(request.form.get('a1_c', 2))
+        
+        # Parameter B1
+        b1_a = float(request.form.get('b1_a', 2))
+        b1_b = float(request.form.get('b1_b', 2))
+        b1_c = float(request.form.get('b1_c', 3))
+        
+        # Parameter A2
+        a2_a = float(request.form.get('a2_a', 2))
+        a2_b = float(request.form.get('a2_b', 2))
+        a2_c = float(request.form.get('a2_c', 5))
+        
+        # Parameter B2
+        b2_a = float(request.form.get('b2_a', 2))
+        b2_b = float(request.form.get('b2_b', 2))
+        b2_c = float(request.form.get('b2_c', 7))
+        
+        # Load dan jalankan ANFIS
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("tugas4", os.path.join(app.root_path, 'hasil_tugas', 'tugas4.py'))
+        tugas4_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tugas4_module)
+        
+        result = tugas4_module.anfis(
+            x, y,
+            [a1_a, a1_b, a1_c],
+            [b1_a, b1_b, b1_c],
+            [a2_a, a2_b, a2_c],
+            [b2_a, b2_b, b2_c]
+        )
+        
+        # Format output
+        output = "=" * 70 + "\n"
+        output += "     ADAPTIVE NEURO-FUZZY INFERENCE SYSTEM (ANFIS)\n"
+        output += "=" * 70 + "\n\n"
+        
+        output += "INPUT VALUES:\n"
+        output += f"- x = {x}\n"
+        output += f"- y = {y}\n\n"
+        
+        output += "MEMBERSHIP FUNCTION PARAMETERS (Generalized Bell):\n"
+        output += "-" * 70 + "\n"
+        output += f"A1(x): a={a1_a}, b={a1_b}, c={a1_c}\n"
+        output += f"B1(y): a={b1_a}, b={b1_b}, c={b1_c}\n"
+        output += f"A2(x): a={a2_a}, b={a2_b}, c={a2_c}\n"
+        output += f"B2(y): a={b2_a}, b={b2_b}, c={b2_c}\n"
+        output += "-" * 70 + "\n\n"
+        
+        output += "FUZZY RULES (Sugeno):\n"
+        output += "-" * 70 + "\n"
+        output += "Rule 1: IF x is A1 AND y is B1 THEN f1 = 0.1x + 0.1y + 0.1\n"
+        output += "Rule 2: IF x is A2 AND y is B2 THEN f2 = 10x + 10y + 10\n"
+        output += "-" * 70 + "\n\n"
+        
+        output += "LAYER-BY-LAYER COMPUTATION:\n"
+        output += "=" * 70 + "\n\n"
+        
+        output += "Layer 1 - Fuzzification (Membership Values):\n"
+        output += "-" * 70 + "\n"
+        output += f"  A1({x}) = {result['A1']:.6f}\n"
+        output += f"  B1({y}) = {result['B1']:.6f}\n"
+        output += f"  A2({x}) = {result['A2']:.6f}\n"
+        output += f"  B2({y}) = {result['B2']:.6f}\n"
+        output += "-" * 70 + "\n\n"
+        
+        output += "Layer 2 - Rule Activation (Firing Strength):\n"
+        output += "-" * 70 + "\n"
+        output += f"  w1 = A1 × B1 = {result['A1']:.6f} × {result['B1']:.6f} = {result['w1']:.6f}\n"
+        output += f"  w2 = A2 × B2 = {result['A2']:.6f} × {result['B2']:.6f} = {result['w2']:.6f}\n"
+        output += "-" * 70 + "\n\n"
+        
+        output += "Layer 3 - Normalization:\n"
+        output += "-" * 70 + "\n"
+        w_sum = result['w1'] + result['w2']
+        output += f"  Sum(w) = w1 + w2 = {w_sum:.6f}\n"
+        output += f"  W1 = w1/Sum(w) = {result['w1']:.6f}/{w_sum:.6f} = {result['W1']:.6f}\n"
+        output += f"  W2 = w2/Sum(w) = {result['w2']:.6f}/{w_sum:.6f} = {result['W2']:.6f}\n"
+        output += "-" * 70 + "\n\n"
+        
+        f1_val = 0.1 * x + 0.1 * y + 0.1
+        f2_val = 10 * x + 10 * y + 10
+        
+        output += "Layer 4 - Defuzzification (Weighted Output):\n"
+        output += "-" * 70 + "\n"
+        output += f"  f1 = 0.1×{x} + 0.1×{y} + 0.1 = {f1_val:.6f}\n"
+        output += f"  f2 = 10×{x} + 10×{y} + 10 = {f2_val:.6f}\n\n"
+        output += f"  out1 = W1 × f1 = {result['W1']:.6f} × {f1_val:.6f} = {result['out1']:.6f}\n"
+        output += f"  out2 = W2 × f2 = {result['W2']:.6f} × {f2_val:.6f} = {result['out2']:.6f}\n"
+        output += "-" * 70 + "\n\n"
+        
+        output += "Layer 5 - Final Output:\n"
+        output += "=" * 70 + "\n"
+        output += f"  OUTPUT = out1 + out2\n"
+        output += f"         = {result['out1']:.6f} + {result['out2']:.6f}\n"
+        output += f"         = {result['final_output']:.6f}\n"
+        output += "=" * 70 + "\n"
+        
+        return render_template('hasil.html', filename='tugas4.py', result=output)
+    
+    except Exception as e:
+        import traceback
+        error_msg = f"Error: {str(e)}\n\nTraceback:\n{traceback.format_exc()}"
+        return render_template('hasil.html', filename='tugas4.py', result=error_msg)
 
 
 if __name__ == '__main__':

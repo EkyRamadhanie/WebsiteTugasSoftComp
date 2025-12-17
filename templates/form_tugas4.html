@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Tugas 4 - ANFIS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .form-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            background: rgba(255,255,255,0.15);
+        }
+        .form-group small {
+            display: block;
+            margin-top: 0.5rem;
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .btn-back {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 1rem;
+            transition: background 0.2s;
+        }
+        .btn-back:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        .section-title {
+            color: #4a90e2;
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(74, 144, 226, 0.3);
+        }
+        .input-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .info-box {
+            background: rgba(74, 144, 226, 0.1);
+            border-left: 4px solid #4a90e2;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        .info-box h4 {
+            color: #4a90e2;
+            margin-top: 0;
+        }
+        .info-box p {
+            color: #ccc;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="btn-back">← Kembali ke Beranda</a>
+        
+        <div class="form-container">
+            <h1 style="text-align: center; color: #fff; margin-bottom: 0.5rem;">
+                🧠 ANFIS Calculator
+            </h1>
+            <p style="text-align: center; color: #aaa; margin-bottom: 2rem;">
+                Adaptive Neuro-Fuzzy Inference System
+            </p>
+
+            <div class="info-box">
+                <h4>ℹ️ Tentang ANFIS</h4>
+                <p>ANFIS menggabungkan fuzzy logic dengan neural networks untuk sistem inferensi adaptif.</p>
+                <p><strong>Generalized Bell Function:</strong> μ(x) = 1 / (1 + |(x - c) / a|^(2b))</p>
+                <p><strong>Rule 1:</strong> IF x is A1 AND y is B1 THEN f1 = 0.1x + 0.1y + 0.1</p>
+                <p><strong>Rule 2:</strong> IF x is A2 AND y is B2 THEN f2 = 10x + 10y + 10</p>
+            </div>
+
+            <form action="/run_tugas4" method="POST">
+                <!-- Input X dan Y -->
+                <div class="section-title">📊 Input Variables</div>
+                
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="x">Nilai X</label>
+                        <input type="number" step="any" id="x" name="x" value="3" required>
+                        <small>Input variabel x</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="y">Nilai Y</label>
+                        <input type="number" step="any" id="y" name="y" value="4" required>
+                        <small>Input variabel y</small>
+                    </div>
+                </div>
+
+                <!-- Parameter A1 -->
+                <div class="section-title">🔵 Membership Function A1(x)</div>
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="a1_a">Parameter a</label>
+                        <input type="number" step="any" id="a1_a" name="a1_a" value="2" required>
+                        <small>Width (lebar kurva)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="a1_b">Parameter b</label>
+                        <input type="number" step="any" id="a1_b" name="a1_b" value="2" required>
+                        <small>Slope (kemiringan)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="a1_c">Parameter c</label>
+                        <input type="number" step="any" id="a1_c" name="a1_c" value="2" required>
+                        <small>Center (pusat kurva)</small>
+                    </div>
+                </div>
+
+                <!-- Parameter B1 -->
+                <div class="section-title">🔵 Membership Function B1(y)</div>
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="b1_a">Parameter a</label>
+                        <input type="number" step="any" id="b1_a" name="b1_a" value="2" required>
+                        <small>Width (lebar kurva)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="b1_b">Parameter b</label>
+                        <input type="number" step="any" id="b1_b" name="b1_b" value="2" required>
+                        <small>Slope (kemiringan)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="b1_c">Parameter c</label>
+                        <input type="number" step="any" id="b1_c" name="b1_c" value="3" required>
+                        <small>Center (pusat kurva)</small>
+                    </div>
+                </div>
+
+                <!-- Parameter A2 -->
+                <div class="section-title">🟣 Membership Function A2(x)</div>
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="a2_a">Parameter a</label>
+                        <input type="number" step="any" id="a2_a" name="a2_a" value="2" required>
+                        <small>Width (lebar kurva)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="a2_b">Parameter b</label>
+                        <input type="number" step="any" id="a2_b" name="a2_b" value="2" required>
+                        <small>Slope (kemiringan)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="a2_c">Parameter c</label>
+                        <input type="number" step="any" id="a2_c" name="a2_c" value="5" required>
+                        <small>Center (pusat kurva)</small>
+                    </div>
+                </div>
+
+                <!-- Parameter B2 -->
+                <div class="section-title">🟣 Membership Function B2(y)</div>
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="b2_a">Parameter a</label>
+                        <input type="number" step="any" id="b2_a" name="b2_a" value="2" required>
+                        <small>Width (lebar kurva)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="b2_b">Parameter b</label>
+                        <input type="number" step="any" id="b2_b" name="b2_b" value="2" required>
+                        <small>Slope (kemiringan)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="b2_c">Parameter c</label>
+                        <input type="number" step="any" id="b2_c" name="b2_c" value="7" required>
+                        <small>Center (pusat kurva)</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    🚀 Hitung ANFIS
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
